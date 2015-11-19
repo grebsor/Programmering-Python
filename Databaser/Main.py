@@ -1,21 +1,19 @@
 import os
-'------------------------ Funktioner ------------------------'
+#'------------------------ Funktioner ------------------------'
 
 def bubbleSortINT(a):
     'a=matris'
-    u=len(a)
     try:
-        while u:
+        for u in range(len(a),1,-1):
             for x in range(u-1):
                 if a[x][1]>a[x+1][1]:
                     a[x],a[x+1]=a[x+1],a[x]
-            u-=1
     except ValueError:
         print "Ogiltigt varde for alder i databasen, vanligen andra till numeriskt varde."
         
 def bubbleSortSTR(a):
     'a=matris'
-    for u in range(len(a),2,-1):
+    for u in range(len(a),1,-1):
         for x in range(u-1):
             rensad1=a[x][0].lower().replace(" ","")
             rensad2=a[x+1][0].lower().replace(" ","")
@@ -64,7 +62,7 @@ def skapaD(b):
     except ValueError:
         print "\nOgiltig inmatning, databasen forkastas.\n"
         
-def dataVal1():
+def meny1():
     print "{0: <5}{1: <40}".format("\n1","Anvand en fardig databas.")
     print "{0: <4}{1: <40}".format("2","Skapa en databas.")
     print "{0: <4}{1: <40}".format("3","Oppna en databas fran fil")
@@ -75,9 +73,9 @@ def dataVal1():
         return int(T)
     else:
         print "Fel val. Try again. \n"
-        return dataVal1()
+        return meny1()
 
-def dataVal2():
+def meny2():
     print "\n{0: <5}{1: <40}".format("\n1","Ta bort element ur databasen.")
     print "{0: <4}{1: <40}".format("2","Lagg till element till databasen.")
     print "{0: <4}{1: <40}".format("3","andra ett element i databasen.")
@@ -94,7 +92,7 @@ def dataVal2():
         return int(T)
     else:
         print "\nOgiltigt val. Try again. \n"
-        return dataVal2()
+        return meny2()
 
 def searchName(name,l):
     found=False
@@ -109,12 +107,12 @@ def searchName(name,l):
 
 """
 
-        searchNumber tar två argument(number,l)
-        och returnerar en lista med alla index där numret matchar
+        searchNumber() tar tva argument(number,l)
+        och returnerar en lista med alla index dar numret matchar
         number: Heltal.
-        l: Lista av listor med minst två element.
-        found:Found är false tills den hittar en matchning.
-        hittatIndexLista:Lista med värdet på alla index som matchar med number.
+        l: Lista av listor med minst tva element.
+        found:Found ar false tills den hittar en matchning.
+        hittatIndexLista:Lista med vardet pa alla index som matchar med number.
         item1: Varje lista i l
         
 """
@@ -130,7 +128,7 @@ def searchNumber(number,l):
         print "\nDoesn't exist.\n"
     return hittatIndexLista
 
-def openFile(name):
+def readFile(name):
     l=[]
     with open(os.path.join('.',name),'r') as f:
         for a in f.readlines():
@@ -144,16 +142,18 @@ def saveFile(name,l):
             temp=info[0]+"\t"+str(info[1])+"\n"
             f.write(temp)
         
-'---------------------------------------Main------------------------------------------------'
+#---------------------------------------MAIN------------------------------------------------
+
+#---------------------------------------MENY1-----------------------------------------------
 
 l=[]
-a=True
+
 while a==True:    
     myDir=[]
     for fil in os.listdir('.'):
         if '.txt' in fil:
             myDir.append(fil)
-    val=dataVal1()
+    val=meny1()
     b=True
     if val==1:
         l=[["Robin Rosberg", 29],["Eda Krodguldu", 19],["Stefan Falk", 49],["Knugen", 70],["Stina Svensson", 17]]
@@ -168,16 +168,19 @@ while a==True:
             b=False
     elif val==3:
         print "\nNedan foljer en lista pa databaser som ar sparade:\n"
-        print myDir,"\n"
+        for u in myDir:
+            print u
+        print "\n"
         try:
-            l=openFile(raw_input("Namn pa filen du vill anvanda: "))
+            l=readFile(raw_input("Namn pa filen du vill anvanda: "))
         except IOError:
             print "\nDet finns ingen fil vid det namnet."
             b=False
     elif val==4:
         c=True
         print "\nNedan foljer en lista pa databaser som ar sparade:\n"
-        print myDir,"\n"
+        for u in myDir:
+            print u
         try:        
             inputnamn=raw_input("\nSpara databas som(namn utan .txt): ")
             filnamn=inputnamn+".txt"
@@ -185,7 +188,7 @@ while a==True:
                 if filnamn==fil:
                     c=False
             if c==False:
-                if "y"==raw_input("\nDet finns redan en fil vid namn {}, vill du skriva over den?(y/n)".format(filnamn)):
+                if "y"==raw_input("\nDet finns redan en fil vid namn {}, \nvill du skriva over den?(y/n)".format(filnamn)):
                     saveFile(filnamn,l)
                     b=False
                 else:
@@ -201,9 +204,10 @@ while a==True:
     elif val==5:
         a=False
         b=False
+#---------------------------------------MENY2-------------------------------------
     if b==True:
         while b==True:
-            val=dataVal2()
+            val=meny2()
             if val==1:
                 printD(l)
                 del l[int(raw_input("Vilket index vill du ta bort? : "))]
